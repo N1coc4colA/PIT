@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Oct 12 08:56:06 2020
-
 @author: eleve
 """
 
@@ -14,9 +13,24 @@ print("<COLOR> keeps the channel of the given image to output image")
 print("BW makes black and white image to output image")
 print("GS makes a grayscale of the image to output image")
 
-image = Image.open("/home/eleve/Bureau/50690360.jpeg")#input("Quel fichier voulez-vous ouvrir?\n"))
-outfile = "/home/eleve/Bureau/test.jpg"#input("Quel est le fichier de sortie?\n")
+image = Image.open("/home/nicolas/Desktop/images.jpeg")#input("Quel fichier voulez-vous ouvrir?\n"))
+outfile = "/home/nicolas/Desktop/out_test.jpg"#input("Quel est le fichier de sortie?\n")
 effect = input("Choisissez un effet [RED|GREEN|BLUE|GRED|GGREEN|GBLUE|GS|BW]: ")
+
+
+def blueGradient():
+    mon_image_bleue = Image.new("RGB",(256,256))
+    for i in range (0,256):
+        for j in range (0,256):
+            mon_image_bleue.putpixel((i,j),(0,0,i))
+    return mon_image_bleue
+
+def greenGradient():
+    mon_image_verte = Image.new("RGB", (256,256))
+    for a in range (0,256):
+        for b in range (0,256):
+            mon_image_verte.putpixel((a,b),(a,255,a))
+    return mon_image_verte
 
 def redGradient():
     img = Image.new("RGB",(256,256))
@@ -25,19 +39,21 @@ def redGradient():
     i = 0
     while i<(256/2):
         j = 0
-        while j<(256/2):
-            img.putpixel((i, j), (int((i*(256/2))), 0, 0))
+        while j<(256):
+            img.putpixel((i, j), (int((i*2)), 0, 0))
             j+=1
         i+=1
     
     #Set the red to white!
-    i = (256/2)
-    while i<(256/2):
-        j = (256/2)
-        while j<(256/2):
-            img.putpixel((i, j), (int(255), int(i), int(i))
+    i = int(256/2)
+    f = 0
+    while i<(256):
+        j = 0
+        while j<(256):
+            img.putpixel((i, j), (int(255), int(f*2), int(f*2)))
             j+=1
         i+=1
+        f+=1
     return img
 
 def redScale(img):
@@ -109,17 +125,17 @@ def grayScale(img):
 def BnW(img):
     """Pass Image type as param, it'll be returned as binded to Black & White"""
     binded = img
-    width, height = img.size
-    i = 0
+    width, height = binded.size
     
-    while i<height:
-        g = 0
-        while g<width:
-            pixel = img.getpixel((i,g))
-            scaled = int((pixiel[0] + pixel[1] + pixel[2])/3)
+    i = 0
+    while i<width:
+        j = 0
+        while j<height:
+            pixel = img.getpixel((i,j))
+            scaled = int((pixel[0] + pixel[1] + pixel[2])/3)
             scaled = ( 0 if (scaled < (256/2)) else 255)
-            binded.putpixel((i,g), (scaled, scaled, scaled))
-            g+=1
+            binded.putpixel((i,j), (scaled, scaled, scaled))
+            j+=1
         i+=1
     
     return binded
@@ -136,26 +152,12 @@ def run(inp, out, eff):
     elif eff=="GRED":
         redGradient().show()#.save(out)
     elif eff=="GGREEN":
-        greenScale(inp).show()#.save(out)
+        greenGradient().show()#.save(out)
     elif eff=="GBLUE":
-        redGradient().show()#.save(out)
+        blueGradient().show()#.save(out)
     elif eff=="BW":
         BnW(inp).show()#.save(out)
     else:
         print("Unsupported effect!")
 
 run(image, outfile, effect)
-
-def BlueGradient():
-    mon_image_bleue = Image.new("RGB",(256,256))
-    for i in range (0,256):
-        for j in range (0,256):
-            mon_image_bleue.putpixel((i,j),(0,0,i))
-    return mon_image_bleue
-
-def GreenGradient():
-    mon_image_verte = Image.new("RGB", (256,256))
-    for a in range (0,256):
-        for b in range (0,256):
-            mon_image_verte.putpixel((a,b),(a,255,a))
-    return mon_image_verte
