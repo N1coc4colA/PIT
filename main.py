@@ -12,10 +12,11 @@ print("G<COLOR> generates an image of the given color")
 print("<COLOR> keeps the channel of the given image to output image")
 print("BW makes black and white image to output image")
 print("GS makes a grayscale of the image to output image")
+print("OLD makes a filter as it was an olp picture")
 
-image = Image.open("/home/nicolas/Desktop/images.jpeg")#input("Quel fichier voulez-vous ouvrir?\n"))
+image = Image.open("/home/eleve/Bureau/50690360.jpeg")#input("Quel fichier voulez-vous ouvrir?\n"))
 outfile = "/home/nicolas/Desktop/out_test.jpg"#input("Quel est le fichier de sortie?\n")
-effect = input("Choisissez un effet [RED|GREEN|BLUE|GRED|GGREEN|GBLUE|GS|BW]: ")
+effect = input("Choisissez un effet [RED|GREEN|BLUE|GRED|GGREEN|GBLUE|GS|BW|OLD]: ")
 
 
 def blueGradient():
@@ -34,7 +35,6 @@ def greenGradient():
 
 def redGradient():
     img = Image.new("RGB",(256,256))
-    
     #Set the black to red
     i = 0
     while i<(256/2):
@@ -43,7 +43,6 @@ def redGradient():
             img.putpixel((i, j), (int((i*2)), 0, 0))
             j+=1
         i+=1
-    
     #Set the red to white!
     i = int(256/2)
     f = 0
@@ -58,59 +57,48 @@ def redGradient():
 
 def redScale(img):
     """Pass Image type as param, it'll be returned as binded to RED scale"""
-    
     binded = img
     width, height = binded.size
     i=0
-    
     while i<width:
         j=0
         while j<height:
             binded.putpixel((i,j), (img.getpixel((i,j))[0], 0, 0))
             j+=1
         i+=1
-        
     return binded
 
 def greenScale(img):
     """Pass Image type as param, it'll be returned as binded to RED scale"""
-    
     binded = img
     width, height = binded.size
     i=0
-    
     while i<width:
         j=0
         while j<height:
             binded.putpixel((i,j), (0, img.getpixel((i,j))[1], 0))
             j+=1
         i+=1
-        
     return binded
 
 def blueScale(img):
     """Pass Image type as param, it'll be returned as binded to RED scale"""
-    
     binded = img
     width, height = binded.size
     i=0
-    
     while i<width:
         j=0
         while j<height:
             binded.putpixel((i,j), (0, 0, img.getpixel((i,j))[2]))
             j+=1
         i+=1
-        
     return binded
 
 def grayScale(img):
     """Pass Image type as parameter, it'll be returned as binded to GS"""
-    
     binded = img
     width, height = binded.size
     i=0
-    
     while i<width:
         j=0
         while j<height:
@@ -119,14 +107,12 @@ def grayScale(img):
             binded.putpixel((i,j), (scaled, scaled, scaled))
             j+=1
         i+=1
-        
     return binded
 
 def BnW(img):
     """Pass Image type as param, it'll be returned as binded to Black & White"""
     binded = img
     width, height = binded.size
-    
     i = 0
     while i<width:
         j = 0
@@ -137,7 +123,20 @@ def BnW(img):
             binded.putpixel((i,j), (scaled, scaled, scaled))
             j+=1
         i+=1
-    
+    return binded
+
+def oldImage(img):
+    binded = img
+    width, height = binded.size
+    i = 0
+    while i<width:
+        j = 0
+        while j<height:
+            pixel = img.getpixel((i,j))
+            scaled = int((pixel[0] + pixel[1] + pixel[2])/3)
+            binded.putpixel((i,j), (int((159+scaled)/2), int((85+scaled)/2), int((30+scaled)/2)))
+            j+=1
+        i+=1
     return binded
 
 def run(inp, out, eff):
@@ -157,6 +156,8 @@ def run(inp, out, eff):
         blueGradient().show()#.save(out)
     elif eff=="BW":
         BnW(inp).show()#.save(out)
+    elif eff=="OLD":
+        oldImage(inp).show()
     else:
         print("Unsupported effect!")
 
