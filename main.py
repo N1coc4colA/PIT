@@ -142,8 +142,7 @@ def oldImage(img):
     return binded
 
 def TnO(img):
-    """Function TnO applies Teal and Orange filter
-    img is of type PIL.Image.Image"""
+    pad = 5
     binded = img
     width, height = binded.size
     i = 0
@@ -152,12 +151,38 @@ def TnO(img):
         while j<height:
             pixel = img.getpixel((i,j))
             blue = pixel[2]
-            red = pixel[1]
-            if pixel[2]>150:
-                 blue = int(pixel[2]+40)
-            if pixel[0]>20:
-                red = int(pixel[0]+40)
-            binded.putpixel((i,j), (red, pixel[1], blue))
+            green = pixel[1]
+            red = pixel[0]
+            match = 0
+            shouldSkip = False
+            
+            if pixel[2]<pixel[1]:
+                if pixel[1]<pixel[0]:
+                    match = pixel[0]
+                    if (pixel[1]<match+pad and pixel[1]>match-pad and pixel[2]<match+pad and pixel[2]>match-pad) == True:
+                        shouldSkip = True
+                else:
+                    match = pixel[1]
+                    if (pixel[2]<match+pad and pixel[2]>match-pad and pixel[0]<match+pad and pixel[0]>match-pad) == True:
+                        shouldSkip = True
+            else:
+                if pixel[2]<pixel[0]:
+                    match = pixel[0]
+                    if (pixel[1]<match+pad and pixel[1]>match-pad and pixel[2]<match+pad and pixel[2]>match-pad) == True:
+                        shouldSkip = True
+                else:
+                    match = pixel[2]
+                    if (pixel[1]<match+pad and pixel[1]>match-pad and pixel[0]<match+pad and pixel[0]>match-pad) == True:
+                        shouldSkip = True
+            
+            if shouldSkip == False:
+                if pixel[2]>150:
+                    blue = int(pixel[2]+70)
+                    if pixel[1]>60 and pixel[1]<200:
+                        green = pixel[1]+40
+                if pixel[0]>60 and pixel[0]<200:
+                     red = int(((pixel[0]*100/256)+10)*256/100)
+                binded.putpixel((i,j), (red, green, blue))
             j+=1
         i+=1
     return binded
