@@ -14,7 +14,7 @@ print("BW makes black and white image to output image")
 print("GS makes a grayscale of the image to output image")
 print("OLD makes a filter as it was an olp picture")
 
-image = Image.open("/home/eleve/Bureau/50690360.jpeg")#input("Quel fichier voulez-vous ouvrir?\n"))
+image = Image.open("/home/eleve/Bureau/img.jpg")#input("Quel fichier voulez-vous ouvrir?\n"))
 outfile = "/home/nicolas/Desktop/out_test.jpg"#input("Quel est le fichier de sortie?\n")
 effect = input("Choisissez un effet [RED|GREEN|BLUE|GRED|GGREEN|GBLUE|GS|BW|OLD]: ")
 
@@ -139,6 +139,25 @@ def oldImage(img):
         i+=1
     return binded
 
+def TnO(img):
+    binded = img
+    width, height = binded.size
+    i = 0
+    while i<width:
+        j = 0
+        while j<height:
+            pixel = img.getpixel((i,j))
+            blue = pixel[2]
+            red = pixel[1]
+            if pixel[2]>150:
+                 blue = int(pixel[2]+40)
+            if pixel[0]>20:
+                red = int(pixel[0]+40)
+            binded.putpixel((i,j), (red, pixel[1], blue))
+            j+=1
+        i+=1
+    return binded
+
 def run(inp, out, eff):
     if(eff == "GS"):
         grayScale(inp).show()#.save(out)
@@ -158,6 +177,8 @@ def run(inp, out, eff):
         BnW(inp).show()#.save(out)
     elif eff=="OLD":
         oldImage(inp).show()
+    elif eff=="TNO":
+        TnO(inp).show()
     else:
         print("Unsupported effect!")
 
