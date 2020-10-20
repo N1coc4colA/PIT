@@ -7,16 +7,16 @@ Created on Mon Oct 12 08:56:06 2020
 
 from PIL import Image
 
-print("Aide:")
-print("G<COLOR> generates an image of the given color")
+print("Help:")
+print("G<COLOR> generates an image of the given gradient color")
 print("<COLOR> keeps the channel of the given image to output image")
 print("BW makes black and white image to output image")
 print("GS makes a grayscale of the image to output image")
 print("OLD makes a filter as it was an olp picture")
 
-image = Image.open("/home/eleve/Bureau/img.jpg")#input("Quel fichier voulez-vous ouvrir?\n"))
+image = Image.open("/home/eleve/Bureau/img.png")#input("Quel fichier voulez-vous ouvrir?\n"))
 outfile = "/home/nicolas/Desktop/out_test.jpg"#input("Quel est le fichier de sortie?\n")
-effect = input("Choisissez un effet [RED|GREEN|BLUE|GRED|GGREEN|GBLUE|GS|BW|OLD]: ")
+effect = input("Choisissez un effet [RED|GREEN|BLUE|GRED|GGREEN|GBLUE|GS|BW|OLD|MIR]: ")
 
 
 def blueGradient():
@@ -126,6 +126,8 @@ def BnW(img):
     return binded
 
 def oldImage(img):
+    """Function oldImage returns the input image with a sepia filter
+    img is of type PIL.Image.Image"""
     binded = img
     width, height = binded.size
     i = 0
@@ -140,6 +142,8 @@ def oldImage(img):
     return binded
 
 def TnO(img):
+    """Function TnO applies Teal and Orange filter
+    img is of type PIL.Image.Image"""
     binded = img
     width, height = binded.size
     i = 0
@@ -157,6 +161,11 @@ def TnO(img):
             j+=1
         i+=1
     return binded
+
+def MirrorPic(mirror_pic):
+    """Function MirrorPic flips the picture"""
+    rotated_image = mirror_pic.transpose(Image.FLIP_LEFT_RIGHT)
+    rotated_image.show()
 
 def run(inp, out, eff):
     if(eff == "GS"):
@@ -179,6 +188,8 @@ def run(inp, out, eff):
         oldImage(inp).show()
     elif eff=="TNO":
         TnO(inp).show()
+    elif eff=="MIR":
+        MirrorPic(inp).show()
     else:
         print("Unsupported effect!")
 
