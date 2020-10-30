@@ -212,7 +212,7 @@ def MirrorPic(mirror_pic):
     return mirror_pic.transpose(Image.FLIP_LEFT_RIGHT)
 
 def applyEffect(inp):
-    """Lets the user choose the effect to apply on the input image."""
+    """Lets the user choose the effect to apply on the input image and returns the image with the effect applied."""
     eff = input("Choose the effect you want: [RED|GREEN|BLUE|GRED|GGREEN|GBLUE|GS|BW|OLD|MIR|TNO] \n")
     #Parse input to know which effect is to be used
     if(eff == "GS"):
@@ -242,6 +242,7 @@ def applyEffect(inp):
         return applyEffect(inp)
 
 def askContinue():
+    """Used to ask the user is he wants or not, otherwise maybe get help. Generates a loop if nothing clear was given in waiting of a valid answer."""
     data = input("Do you want to continue or get some help? [Y/N/H] ")
     if data == "Y":
         return True
@@ -254,6 +255,7 @@ def askContinue():
         return askContinue()
 
 def requestInputFile():
+    """Asks the user for a (valid) input image that is returned. Generates a loop in waiting of a valid file"""
     inputfile = input("Which file do you want as input?\n")
     try:
         return Image.open(inputfile)
