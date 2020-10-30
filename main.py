@@ -7,19 +7,26 @@ Created on Mon Oct 12 08:56:06 2020
 
 from PIL import Image
 
-print("Help:")
-print("G<COLOR> generates an image of the given gradient color")
-print("<COLOR> keeps the channel of the given image to output image")
-print("BW makes black and white image to output image")
-print("GS makes a grayscale of the image to output image")
-print("OLD makes a filter as it was an olp picture")
 
-image = Image.open("/home/eleve/Bureau/img.png")#input("Quel fichier voulez-vous ouvrir?\n"))
-outfile = "/home/nicolas/Desktop/out_test.jpg"#input("Quel est le fichier de sortie?\n")
-effect = input("Choisissez un effet [RED|GREEN|BLUE|GRED|GGREEN|GBLUE|GS|BW|OLD|MIR]: ")
-
+def getHelp():
+    """Prints program help for the user"""
+    print("\n---------Help----------")
+    print(" |- G<COLOR> generates an image of the given gradient color")
+    print(" |    |- RED")
+    print(" |    |- GREEN")
+    print(" |    +- BLUE")
+    print(" |- <COLOR>  keeps the channel of the given image to output image")
+    print(" |    |- RED")
+    print(" |    |- GREEN")
+    print(" |    +- BLUE")
+    print(" |- BW       makes black and white image to output image")
+    print(" |- GS       makes a grayscale of the image to output image")
+    print(" |- OLD      makes a filter as it was an olp picture")
+    print(" +- TNO      applies Teal and Orange filter to the image")
+    print("-----------------------\n")
 
 def blueGradient():
+    """Generates a blue gradient"""
     mon_image_bleue = Image.new("RGB",(256,256))
     for i in range (0,256):
         for j in range (0,256):
@@ -34,6 +41,7 @@ def greenGradient():
     return mon_image_verte
 
 def redGradient():
+    """Generates a gradient as: Black > Red > White"""
     img = Image.new("RGB",(256,256))
     #Set the black to red
     i = 0
@@ -119,6 +127,7 @@ def BnW(img):
         while j<height:
             pixel = img.getpixel((i,j))
             scaled = int((pixel[0] + pixel[1] + pixel[2])/3)
+            #Filter to know if it have to be B or W
             scaled = ( 0 if (scaled < (256/2)) else 255)
             binded.putpixel((i,j), (scaled, scaled, scaled))
             j+=1
@@ -135,16 +144,22 @@ def oldImage(img):
         j = 0
         while j<height:
             pixel = img.getpixel((i,j))
+            #Needs to make an average to have a proper gray scale
             scaled = int((pixel[0] + pixel[1] + pixel[2])/3)
+            #Add the color values to get the sepia effect
             binded.putpixel((i,j), (int((159+scaled)/2), int((85+scaled)/2), int((30+scaled)/2)))
             j+=1
         i+=1
     return binded
 
 def TnO(img):
+    """Applyes the Teal & Orange effect from the input image and is returned"""
+    #The range in which the color is considered as white (pad*2)
     pad = 5
     binded = img
     width, height = binded.size
+    
+    
     i = 0
     while i<width:
         j = 0
@@ -156,6 +171,7 @@ def TnO(img):
             match = 0
             shouldSkip = False
             
+            #Filter the pixel color to know if it in the same range
             if pixel[2]<pixel[1]:
                 if pixel[1]<pixel[0]:
                     match = pixel[0]
@@ -175,11 +191,15 @@ def TnO(img):
                     if (pixel[1]<match+pad and pixel[1]>match-pad and pixel[0]<match+pad and pixel[0]>match-pad) == True:
                         shouldSkip = True
             
+            #If the pixel value range was correct, we skip it
             if shouldSkip == False:
+                #Check blue color to make it higher
+                #[TODO] fix the blue which isn't good enough
                 if pixel[2]>150:
                     blue = int(pixel[2]+70)
                     if pixel[1]>60 and pixel[1]<200:
                         green = pixel[1]+40
+                #Check the red to make orange if it's not good enough
                 if pixel[0]>60 and pixel[0]<200:
                      red = int(((pixel[0]*100/256)+10)*256/100)
                 binded.putpixel((i,j), (red, green, blue))
@@ -189,33 +209,68 @@ def TnO(img):
 
 def MirrorPic(mirror_pic):
     """Function MirrorPic flips the picture"""
-    rotated_image = mirror_pic.transpose(Image.FLIP_LEFT_RIGHT)
-    rotated_image.show()
+    return mirror_pic.transpose(Image.FLIP_LEFT_RIGHT)
 
-def run(inp, out, eff):
+def applyEffect(inp):
+    """Lets the user choose the effect to apply on the input image."""
+    eff = input("Choose the effect you want: [RED|GREEN|BLUE|GRED|GGREEN|GBLUE|GS|BW|OLD|MIR|TNO] \n")
+    #Parse input to know which effect is to be used
     if(eff == "GS"):
-        grayScale(inp).show()#.save(out)
+        return grayScale(inp)
     elif eff=="RED":
-        redScale(inp).show()#.save(out)
+        return redScale(inp)
     elif eff=="GREEN":
-        greenScale(inp).show()#.save(out)
+        return greenScale(inp)
     elif eff=="BLUE":
-        blueScale(inp).show()#.save(out)
+        return blueScale(inp)
     elif eff=="GRED":
-        redGradient().show()#.save(out)
+        return redGradient()
     elif eff=="GGREEN":
-        greenGradient().show()#.save(out)
+        return greenGradient()
     elif eff=="GBLUE":
-        blueGradient().show()#.save(out)
+        return blueGradient()
     elif eff=="BW":
-        BnW(inp).show()#.save(out)
+        return BnW(inp)
     elif eff=="OLD":
-        oldImage(inp).show()
+        return oldImage(inp)
     elif eff=="TNO":
-        TnO(inp).show()
+        return TnO(inp)
     elif eff=="MIR":
-        MirrorPic(inp).show()
+        return MirrorPic(inp)
     else:
         print("Unsupported effect!")
+        return applyEffect(inp)
 
-run(image, outfile, effect)
+def askContinue():
+    data = input("Do you want to continue or get some help? [Y/N/H] ")
+    if data == "Y":
+        return True
+    elif data == "N":
+        return False
+    elif data == "H":
+        getHelp()
+        return askContinue()
+    else:
+        return askContinue()
+
+def requestInputFile():
+    inputfile = input("Which file do you want as input?\n")
+    try:
+        return Image.open(inputfile)
+    except FileNotFoundError:
+        print("Error, the file doesn't exists!")
+        return requestInputFile()
+
+def main():
+    """Program main loop"""
+    close = False
+    while close == False:
+        close = not askContinue()
+        if close == False:
+            image = requestInputFile()
+            outfile = input("Which file do you want as output?\n")
+            image = applyEffect(image)
+            print("Saving file...")
+            image.save(outfile)
+
+main()
