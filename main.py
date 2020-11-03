@@ -21,12 +21,12 @@ def getHelp():
     print(" |    +- BLUE")
     print(" |- BW       makes black and white image to output image")
     print(" |- GS       makes a grayscale of the image to output image")
-    print(" |- OLD      makes a filter as it was an olp picture")
+    print(" |- OLD      makes a filter as it was an old picture")
     print(" +- TNO      applies Teal and Orange filter to the image")
     print("-----------------------\n")
 
 def blueGradient():
-    """Generates a blue gradient"""
+    """Generates a gradient as: Black > Blue > White"""
     mon_image_bleue = Image.new("RGB",(256,256))
     for i in range (0,256):
         for j in range (0,256):
@@ -34,6 +34,7 @@ def blueGradient():
     return mon_image_bleue
 
 def greenGradient():
+    """Generates a gradient as: Black > Green > White"""
     mon_image_verte = Image.new("RGB", (256,256))
     for a in range (0,256):
         for b in range (0,256):
