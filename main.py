@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Oct 12 08:56:06 2020
-@author: eleve
-"""
+@author: teavanui n1coc4cola
 
 from PIL import Image
 
@@ -65,7 +64,16 @@ def redGradient():
     return img
 
 def redScale(img):
-    """Pass Image type as param, it'll be returned as binded to RED scale"""
+    """Pass Image type as param, it'll be returned as binded to RED scale
+    >>> redScale("ygjk")
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'str' object has no attribute 'size'
+    >>> redScale(987)
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'int' object has no attribute 'size'
+    """
     binded = img
     width, height = binded.size
     i=0
@@ -78,7 +86,16 @@ def redScale(img):
     return binded
 
 def greenScale(img):
-    """Pass Image type as param, it'll be returned as binded to RED scale"""
+    """Pass Image type as param, it'll be returned as binded to RED scale
+    >>> greenScale("ygjk")
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'str' object has no attribute 'size'
+    >>> greenScale(987)
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'int' object has no attribute 'size'
+    """
     binded = img
     width, height = binded.size
     i=0
@@ -91,7 +108,16 @@ def greenScale(img):
     return binded
 
 def blueScale(img):
-    """Pass Image type as param, it'll be returned as binded to RED scale"""
+    """Pass Image type as param, it'll be returned as binded to RED scale
+    >>> blueScale("ygjk")
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'str' object has no attribute 'size'
+    >>> blueScale(987)
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'int' object has no attribute 'size'
+    """
     binded = img
     width, height = binded.size
     i=0
@@ -104,7 +130,16 @@ def blueScale(img):
     return binded
 
 def grayScale(img):
-    """Pass Image type as parameter, it'll be returned as binded to GS"""
+    """Pass Image type as parameter, it'll be returned as binded to GS
+    >>> grayScale("ygjk")
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'str' object has no attribute 'size'
+    >>> grayScale(987)
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'int' object has no attribute 'size'
+    """
     binded = img
     width, height = binded.size
     i=0
@@ -119,7 +154,16 @@ def grayScale(img):
     return binded
 
 def BnW(img):
-    """Pass Image type as param, it'll be returned as binded to Black & White"""
+    """Pass Image type as param, it'll be returned as binded to Black & White
+    >>> BnW("ygjk")
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'str' object has no attribute 'size'
+    >>> BnW(987)
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'int' object has no attribute 'size'
+    """
     binded = img
     width, height = binded.size
     i = 0
@@ -136,8 +180,16 @@ def BnW(img):
     return binded
 
 def oldImage(img):
-    """Function oldImage returns the input image with a sepia filter
-    img is of type PIL.Image.Image"""
+    """Function oldImage returns the input image with a sepia filter, img is of type PIL.Image.Image
+    >>> oldImage("ygjk")
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'str' object has no attribute 'size'
+    >>> oldImage(987)
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'int' object has no attribute 'size'
+    """
     binded = img
     width, height = binded.size
     i = 0
@@ -154,7 +206,16 @@ def oldImage(img):
     return binded
 
 def TnO(img):
-    """Applyes the Teal & Orange effect from the input image and is returned"""
+    """Applyes the Teal & Orange effect from the input image and is returned
+    >>> TnO("ygjk")
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'str' object has no attribute 'size'
+    >>> TnO(987)
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'int' object has no attribute 'size'
+    """
     #The range in which the color is considered as white (pad*2)
     pad = 5
     binded = img
@@ -209,7 +270,16 @@ def TnO(img):
     return binded
 
 def MirrorPic(mirror_pic):
-    """Function MirrorPic flips the picture"""
+    """Function MirrorPic flips the picture
+    >>> MirrorPic("ygjk")
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'str' object has no attribute 'transpose'
+    >>> MirrorPic(987)
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'int' object has no attribute 'transpose'
+    """
     return mirror_pic.transpose(Image.FLIP_LEFT_RIGHT)
 
 def applyEffect(inp):
@@ -275,5 +345,9 @@ def main():
             image = applyEffect(image)
             print("Saving file...")
             image.save(outfile)
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
 
 main()
